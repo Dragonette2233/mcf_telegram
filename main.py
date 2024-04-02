@@ -14,7 +14,8 @@ import logging
 import redis
 from static_data import (
     PATH,
-    OWNER
+    OWNER,
+    AUTH_COMMAND
 )
 # Enable logging
 logging.basicConfig(
@@ -224,7 +225,7 @@ def main() -> None:
     """Start the bot."""
     application = Application.builder().token(os.getenv('BOT_TOKEN')).build()
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler(os.getenv('AUTH_COMMAND'), first_auth))
+    application.add_handler(CommandHandler(AUTH_COMMAND, first_auth))
     application.add_handler(CommandHandler("game", echo_score))
     # application.add_handler(CommandHandler("build", echo_build))
     application.add_handler(CommandHandler("predicts_global", predicts_check))

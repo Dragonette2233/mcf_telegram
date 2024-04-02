@@ -1,6 +1,7 @@
 import os
 
 OWNER = int(os.getenv('OWNER'))
+AUTH_COMMAND = os.getenv('AUTH_COMMAND')
 
 class PATH:
 
