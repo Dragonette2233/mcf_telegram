@@ -9,7 +9,7 @@ class PATH:
 
     INVITE_LINK = 'https://t.me/' + os.getenv('INVITE_LINK')
     
-    MIRROR_PAGE = os.path.join('.', 'storage_data', 'mirror_page.txt')
+    MIRROR_PAGE = os.path.join(MCF_BOT, 'untracking', 'mirror_page.txt')
     AUTH_USERS = os.path.join(MCF_BOT, 'untracking', 'authorized_users') # Postgre!
     MAIN_INFO = os.path.join('.', 'storage_data', 'bot_info_message.txt')
     EXTEND_INFO = os.path.join('.', 'storage_data', 'bot_extendinfo_message.txt')
