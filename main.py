@@ -3,11 +3,11 @@ from telegram import ReplyKeyboardMarkup, KeyboardButton
 from functools import wraps
 from telegram.ext import Application, CommandHandler, CallbackContext, StringRegexHandler, MessageHandler, filters
 from io import BytesIO
-from bot_reload import (
-    close_mcf_and_chrome,
-    start_mcf,
-    status_mcf
-)
+# from bot_reload import (
+#     close_mcf_and_chrome,
+#     start_mcf,
+#     status_mcf
+# )
 import json
 import os
 import logging
