@@ -69,7 +69,7 @@ async def first_auth(update: Update, context: CallbackContext):
     us_id = str(update.message.from_user.id)
     
     keyboard = [[KeyboardButton('/game')] ]
-    print(update.message.from_user.id)
+    # print(update.message.from_user.id)
     if update.message.from_user.id == OWNER:
         keyboard.append([KeyboardButton('/mcf_status')])
     reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
@@ -158,30 +158,6 @@ async def echo_score(update: Update, context: CallbackContext) -> None:
     else:
         await update.message.reply_text('Нет активной игры')
 
-@auth(authorized_users=authorized_users)
-async def echo_build(update: Update, context: CallbackContext) -> None:
-    
-    try:
-        with open(os.path.join('images_lib', 'buildcrop.png'), 'rb') as photo_file:
-            await update.message.reply_photo(photo=photo_file)
-    except:
-        await update.message.reply_text('Нет активной игры')
-
-@auth(authorized_users=authorized_users)
-async def mcf_reload(update: Update, context: CallbackContext) -> None:
-    return
-    close_mcf_and_chrome()
-    start_mcf()
-
-    await update.message.reply_text('Бот перезагружен')
-
-@auth(authorized_users=authorized_users)
-async def mcf_stop(update: Update, context: CallbackContext) -> None:
-    return
-    close_mcf_and_chrome()
-    # start_mcf()
-
-    await update.message.reply_text('Бот остановлен')
 
 @auth(authorized_users=authorized_users)
 async def mcf_status(update: Update, context: CallbackContext) -> None:
@@ -195,6 +171,11 @@ async def mcf_status(update: Update, context: CallbackContext) -> None:
 
         # Отправка изображения как фото
         await update.message.reply_photo(photo=img_byte_array)
+
+async def trial(update: Update, context: CallbackContext) -> None:
+
+    await update.message.reply_text('Пробный период действует сутки: {link}'.format(link=PATH.INVITE_LINK))
+
 
 # @auth(authorized_users=authorized_users)
 async def predicts_check(update: Update, context: CallbackContext) -> None:
@@ -230,6 +211,7 @@ def main() -> None:
     # application.add_handler(CommandHandler("build", echo_build))
     application.add_handler(CommandHandler("predicts_global", predicts_check))
     application.add_handler(CommandHandler("predicts_daily", predicts_check))
+    application.add_handler(CommandHandler("trial", trial))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
 
@@ -238,8 +220,6 @@ def main() -> None:
     application.add_handler(CommandHandler('info_extend', info))
     application.add_handler(CommandHandler('mirror', actual_mirror))
 
-    application.add_handler(CommandHandler('mcf_reload', mcf_reload))
-    application.add_handler(CommandHandler('mcf_stop', mcf_stop))
     application.add_handler(CommandHandler('emul_stop', emul))
     application.add_handler(CommandHandler('mcf_status', mcf_status))
     
