@@ -101,7 +101,7 @@ async def start(update: Update, context: CallbackContext):
 
     visitor = update.message.chat.first_name
     with open(PATH.GREET_MESSAGE, 'r', encoding='utf-8') as greet:
-        await update.message.reply_text(greet.read().format(visitor=visitor))
+        await update.message.reply_text(greet.read().format(visitor=visitor, trial_link=PATH.INVITE_LINK, chat_link=PATH.CHAT_LINK))
 
 @auth(authorized_users=authorized_users)
 async def emul(update: Update, context: CallbackContext):
@@ -211,7 +211,7 @@ def main() -> None:
     # application.add_handler(CommandHandler("build", echo_build))
     application.add_handler(CommandHandler("predicts_global", predicts_check))
     application.add_handler(CommandHandler("predicts_daily", predicts_check))
-    application.add_handler(CommandHandler("trial", trial))
+    # application.add_handler(CommandHandler("trial", trial))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
 

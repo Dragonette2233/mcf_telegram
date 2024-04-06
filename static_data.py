@@ -3,11 +3,20 @@ import os
 OWNER = int(os.getenv('OWNER'))
 AUTH_COMMAND = os.getenv('AUTH_COMMAND')
 
+class TEXT:
+    
+    def get_from_disk(path):
+        with open(path, 'r', encoding='utf-8') as greet:
+            return greet.read()
+
+    some_text = get_from_disk('some_path//')
+
 class PATH:
 
     MCF_BOT = os.getenv('MCF_BOT')
 
-    INVITE_LINK = 'https://t.me/' + os.getenv('INVITE_LINK')
+    INVITE_LINK = 'https://t.me/' + os.getenv('TRIAL_LINK')
+    CHAT_LINK = 'https://t.me/' + os.getenv('CHAT_LINK')
     
     MIRROR_PAGE = os.path.join(MCF_BOT, 'untracking', 'mirror_page.txt')
     AUTH_USERS = os.path.join(MCF_BOT, 'untracking', 'authorized_users') # Postgre!
