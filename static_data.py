@@ -4,12 +4,12 @@ OWNER = int(os.getenv('OWNER'))
 AUTH_COMMAND = os.getenv('AUTH_COMMAND')
 
 class TEXT:
-    
+
     def get_from_disk(path):
         with open(path, 'r', encoding='utf-8') as greet:
             return greet.read()
 
-    some_text = get_from_disk('some_path//')
+    # some_text = get_from_disk('some_path//')
 
 class PATH:
 
