@@ -1,5 +1,6 @@
 import os
 
+
 OWNER = int(os.getenv('OWNER'))
 AUTH_COMMAND = os.getenv('AUTH_COMMAND')
 
@@ -8,7 +9,7 @@ class TEXT:
     def get_from_disk(path):
         with open(path, 'r', encoding='utf-8') as greet:
             return greet.read()
-
+ 
     # some_text = get_from_disk('some_path//')
 
 class PATH:
@@ -22,6 +23,7 @@ class PATH:
     AUTH_USERS = os.path.join(MCF_BOT, 'untracking', 'authorized_users') # Postgre!
     MAIN_INFO = os.path.join('.', 'storage_data', 'bot_info_message.txt')
     EXTEND_INFO = os.path.join('.', 'storage_data', 'bot_extendinfo_message.txt')
+    BETS_INFO = os.path.join('.', 'storage_data', 'bets_start_message.txt')
     FLETS_INFO = os.path.join('.', 'storage_data', 'flets_info_message.txt')
     SCORE_ANSWER = os.path.join('.', 'storage_data', 'score_answer_sample.txt')
     PREDICTS_ANSWER = os.path.join('.', 'storage_data', 'predicts_answer_sample.txt')

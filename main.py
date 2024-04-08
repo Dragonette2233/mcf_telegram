@@ -94,6 +94,8 @@ async def info(update: Update, context: CallbackContext):
         answer = open(PATH.FLETS_INFO, encoding='utf-8').read()
     elif update.message.text == '/info_extend':
         answer = open(PATH.EXTEND_INFO, encoding='utf-8').read()
+    elif update.message.text == '/info_bets':
+        answer = open(PATH.BETS_INFO, encoding='utf-8').read()
     await update.message.reply_text(answer)
 
 # @auth(authorized_users=authorized_users)
@@ -218,6 +220,7 @@ def main() -> None:
     application.add_handler(CommandHandler('info', info))
     application.add_handler(CommandHandler('info_predicts', info))
     application.add_handler(CommandHandler('info_extend', info))
+    application.add_handler(CommandHandler('info_bets', info))
     application.add_handler(CommandHandler('mirror', actual_mirror))
 
     application.add_handler(CommandHandler('emul_stop', emul))
