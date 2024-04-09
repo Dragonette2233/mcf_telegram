@@ -90,10 +90,6 @@ async def info(update: Update, context: CallbackContext):
 
     if update.message.text == '/info':
         answer = open(PATH.MAIN_INFO, encoding='utf-8').read()
-    elif update.message.text == '/info_predicts':
-        answer = open(PATH.FLETS_INFO, encoding='utf-8').read()
-    elif update.message.text == '/info_extend':
-        answer = open(PATH.EXTEND_INFO, encoding='utf-8').read()
     elif update.message.text == '/info_bets':
         answer = open(PATH.BETS_INFO, encoding='utf-8').read()
     await update.message.reply_text(answer)
@@ -218,8 +214,8 @@ def main() -> None:
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
 
     application.add_handler(CommandHandler('info', info))
-    application.add_handler(CommandHandler('info_predicts', info))
-    application.add_handler(CommandHandler('info_extend', info))
+    #application.add_handler(CommandHandler('info_predicts', info))
+    #application.add_handler(CommandHandler('info_extend', info))
     application.add_handler(CommandHandler('info_bets', info))
     application.add_handler(CommandHandler('mirror', actual_mirror))
 
