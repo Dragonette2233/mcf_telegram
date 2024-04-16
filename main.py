@@ -13,7 +13,7 @@ import os
 import logging
 import redis
 from static_data import (
-    PATH,
+    STORAGE,
     OWNER,
     AUTH_COMMAND
 )
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 
-with open(PATH.AUTH_USERS, 'r') as us:
+with open(STORAGE.AUTH_USERS, 'r') as us:
     authorized_users = [i[:-1] for i in us.readlines()]
 
 snip = {
@@ -79,7 +79,7 @@ async def first_auth(update: Update, context: CallbackContext):
     else:
         authorized_users.append(us_id)
 
-        with open(PATH.AUTH_USERS, 'w+') as us:
+        with open(STORAGE.AUTH_USERS, 'w+') as us:
             for i in authorized_users:
                 us.writelines(i + '\n')
 
@@ -89,17 +89,17 @@ async def first_auth(update: Update, context: CallbackContext):
 async def info(update: Update, context: CallbackContext):
 
     if update.message.text == '/info':
-        answer = open(PATH.MAIN_INFO, encoding='utf-8').read()
+        answer = STORAGE.MAIN_INFO
     elif update.message.text == '/info_bets':
-        answer = open(PATH.BETS_INFO, encoding='utf-8').read()
+        answer = STORAGE.BETS_INFO
     await update.message.reply_text(answer)
 
 # @auth(authorized_users=authorized_users)
 async def start(update: Update, context: CallbackContext):
 
     visitor = update.message.chat.first_name
-    with open(PATH.GREET_MESSAGE, 'r', encoding='utf-8') as greet:
-        await update.message.reply_text(greet.read().format(visitor=visitor, trial_link=PATH.INVITE_LINK, chat_link=PATH.CHAT_LINK))
+    # with open(STORAGE.GREET_MESSAGE, 'r', encoding='utf-8') as greet:
+    await update.message.reply_text(STORAGE.GREET_MESSAGE.format(visitor=visitor, trial_link=STORAGE.INVITE_LINK, chat_link=STORAGE.CHAT_LINK))
 
 @auth(authorized_users=authorized_users)
 async def emul(update: Update, context: CallbackContext):
@@ -110,7 +110,7 @@ async def emul(update: Update, context: CallbackContext):
 
 # @auth(authorized_users=authorized_users)
 async def actual_mirror(update: Update, context: CallbackContext):
-    with open(PATH.MIRROR_PAGE, 'r') as ex_url:
+    with open(STORAGE.MIRROR_PAGE, 'r') as ex_url:
         await update.message.reply_text(f'Актуальное зеркало: {ex_url.read()}')
 
 @auth(authorized_users=authorized_users)
@@ -124,7 +124,7 @@ async def change_actual_mirror(update: Update, context: CallbackContext):
     else:
         link_parts = message.split('/')
         new_link = '/'.join(link_parts[0:3]) + league_alt_rout
-        with open(PATH.MIRROR_PAGE, 'w+') as ex_url:
+        with open(STORAGE.MIRROR_PAGE, 'w+') as ex_url:
             ex_url.write(new_link)
 
         await update.message.reply_text(f'Зеркало добавлено: {new_link}')
@@ -135,13 +135,10 @@ async def echo_score(update: Update, context: CallbackContext) -> None:
 
     if r.get('is_active') != '0':
         
-        with open(PATH.SCORE_ANSWER, 'r', encoding='utf-8') as sample:
-            message_sample = sample.read()
-
         timestamp = divmod(int(r.get('time')), 60)
         minutes = timestamp[0] if timestamp[0] > 9 else f"0{timestamp[0]}"
         seconds = timestamp[1] if timestamp[1] > 9 else f"0{timestamp[1]}"
-        message_for_reply = message_sample.format(
+        message_for_reply = STORAGE.SCORE_ANSWER.format(
             blue_kills = r.get('blue_kills'),
             blue_towers = r.get('blue_towers'),
             red_kills = r.get('red_kills'),
@@ -172,24 +169,24 @@ async def mcf_status(update: Update, context: CallbackContext) -> None:
 
 async def trial(update: Update, context: CallbackContext) -> None:
 
-    await update.message.reply_text('Пробный период действует сутки: {link}'.format(link=PATH.INVITE_LINK))
+    await update.message.reply_text('Пробный период действует сутки: {link}'.format(link=STORAGE.INVITE_LINK))
 
 
 # @auth(authorized_users=authorized_users)
 async def predicts_check(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
 
-    with open(PATH.PREDICTS_ANSWER, 'r', encoding='utf-8') as file:
+    with open(STORAGE.PREDICTS_ANSWER, 'r', encoding='utf-8') as file:
         predicts_answer_message = file.read()
 
     if update.message.text == '/predicts_global':
         top_message = 'Результат по предиктам за все время'
-        predicts_path = PATH.PREDICTS_TRACE_GLOBAL
+        predicts_STORAGE = STORAGE.PREDICTS_TRACE_GLOBAL
     else:
         top_message = 'Результат по предиктам за сутки'
-        predicts_path = PATH.PREDICTS_TRACE_DAILY
+        predicts_STORAGE = STORAGE.PREDICTS_TRACE_DAILY
 
-    with open(predicts_path, 'r', encoding='utf-8') as js_stats:
+    with open(predicts_STORAGE, 'r', encoding='utf-8') as js_stats:
         predicts: dict = json.load(js_stats)
         itms = list(predicts.items())
 

@@ -12,24 +12,28 @@ class TEXT:
  
     # some_text = get_from_disk('some_path//')
 
-class PATH:
+class STORAGE:
 
-    MCF_BOT = os.getenv('MCF_BOT')
+    MCF_BOT: str = os.getenv('MCF_BOT')
 
     INVITE_LINK = 'https://t.me/' + os.getenv('TRIAL_LINK')
     CHAT_LINK = 'https://t.me/' + os.getenv('CHAT_LINK')
     
     MIRROR_PAGE = os.path.join(MCF_BOT, 'untracking', 'mirror_page.txt')
     AUTH_USERS = os.path.join(MCF_BOT, 'untracking', 'authorized_users') # Postgre!
-    MAIN_INFO = os.path.join('.', 'storage_data', 'bot_info_message.txt')
-    EXTEND_INFO = os.path.join('.', 'storage_data', 'bot_extendinfo_message.txt')
-    BETS_INFO = os.path.join('.', 'storage_data', 'bets_start_message.txt')
-    FLETS_INFO = os.path.join('.', 'storage_data', 'flets_info_message.txt')
-    SCORE_ANSWER = os.path.join('.', 'storage_data', 'score_answer_sample.txt')
+
+    GREET_MESSAGE = open(os.path.join('.', 'storage_data', 'greet_message.txt'), 'r', encoding='utf-8').read()
+    MAIN_INFO = open(os.path.join('.', 'storage_data', 'bot_info_message.txt'), 'r', encoding='utf-8').read()
+    # EXTEND_INFO = open(os.path.join('.', 'storage_data', 'bot_extendinfo_message.txt'), 'r', encoding='utf-8').read()
+    BETS_INFO = open(os.path.join('.', 'storage_data', 'bets_start_message.txt'), 'r', encoding='utf-8').read()
+    # FLETS_INFO = open(os.path.join('.', 'storage_data', 'flets_info_message.txt'), 'r', encoding='utf-8').read()
+    SCORE_ANSWER = open(os.path.join(MCF_BOT, 'mcf_lib', 'score_snip.txt'), 'r', encoding='utf-8').read()
+
     PREDICTS_ANSWER = os.path.join('.', 'storage_data', 'predicts_answer_sample.txt')
     PREDICTS_TRACE_GLOBAL = os.path.join(MCF_BOT, 'untracking', 'predicts_trace.json')
     PREDICTS_TRACE_DAILY = os.path.join(MCF_BOT, 'untracking', 'predicts_trace_daily.json')
-    GREET_MESSAGE = os.path.join('.', 'storage_data', 'greet_message.txt')
+
+    
 
 class Storage:
 
