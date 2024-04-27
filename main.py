@@ -3,15 +3,10 @@ from telegram import ReplyKeyboardMarkup, KeyboardButton
 from functools import wraps
 from telegram.ext import Application, CommandHandler, CallbackContext, StringRegexHandler, MessageHandler, filters
 from io import BytesIO
-# from bot_reload import (
-#     close_mcf_and_chrome,
-#     start_mcf,
-#     status_mcf
-# )
 import json
 import os
 import logging
-import redis
+# import redis
 from static_data import (
     STORAGE,
     OWNER,
@@ -25,33 +20,33 @@ logging.basicConfig(
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
-r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+# r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 
 with open(STORAGE.AUTH_USERS, 'r') as us:
     authorized_users = [i[:-1] for i in us.readlines()]
 
-snip = {
-    "time": 0,
+# snip = {
+#     "time": 0,
 
-    "blue_kills": 0,
-    "red_kills": 0,
+#     "blue_kills": 0,
+#     "red_kills": 0,
 
-    "blue_towers": 0,
-    "red_towers": 0,
+#     "blue_towers": 0,
+#     "red_towers": 0,
 
-    "blue_t1_hp": 0,
-    "red_t1_hp": 0,
+#     "blue_t1_hp": 0,
+#     "red_t1_hp": 0,
 
-    "blue_gold": 0,
-    "red_gold": 0,
+#     "blue_gold": 0,
+#     "red_gold": 0,
 
-    "is_active": 0
-}
+#     "is_active": 0
+# }
 
-# Установка значения
-for key, value in snip.items():
-    r.set(key, value)
+# # Установка значения
+# for key, value in snip.items():
+#     r.set(key, value)
 
 def auth(authorized_users):
     def decorator(func):
@@ -202,7 +197,7 @@ def main() -> None:
     application = Application.builder().token(os.getenv('BOT_TOKEN')).build()
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler(AUTH_COMMAND, first_auth))
-    application.add_handler(CommandHandler("game", echo_score))
+    # application.add_handler(CommandHandler("game", echo_score))
     # application.add_handler(CommandHandler("build", echo_build))
     application.add_handler(CommandHandler("predicts_global", predicts_check))
     application.add_handler(CommandHandler("predicts_daily", predicts_check))
