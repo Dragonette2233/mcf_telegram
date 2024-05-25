@@ -16,7 +16,7 @@ class STORAGE:
 
     MCF_BOT: str = os.getenv('MCF_BOT')
 
-    INVITE_LINK = 'https://t.me/' + os.getenv('TRIAL_LINK')
+    TRIAL_LINK = 'https://t.me/' + os.getenv('TRIAL_LINK')
     CHAT_LINK = 'https://t.me/' + os.getenv('CHAT_LINK')
     
     MIRROR_PAGE = os.path.join(MCF_BOT, 'untracking', 'mirror_page.txt')

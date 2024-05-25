@@ -2,3 +2,4 @@
 __pycache__/
 telegram.bat
 bot_reload.py
+storage_data/depr.txt

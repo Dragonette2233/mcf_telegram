@@ -1,12 +1,12 @@
 from telegram import Update
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 from functools import wraps
-from telegram.ext import Application, CommandHandler, CallbackContext, StringRegexHandler, MessageHandler, filters
+from telegram.ext import Application, CommandHandler, CallbackContext, MessageHandler, filters
 from io import BytesIO
 import json
 import os
 import logging
-# import redis
+
 from static_data import (
     STORAGE,
     OWNER,
@@ -20,33 +20,13 @@ logging.basicConfig(
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
-# r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
 
 
 with open(STORAGE.AUTH_USERS, 'r') as us:
     authorized_users = [i[:-1] for i in us.readlines()]
 
-# snip = {
-#     "time": 0,
 
-#     "blue_kills": 0,
-#     "red_kills": 0,
-
-#     "blue_towers": 0,
-#     "red_towers": 0,
-
-#     "blue_t1_hp": 0,
-#     "red_t1_hp": 0,
-
-#     "blue_gold": 0,
-#     "red_gold": 0,
-
-#     "is_active": 0
-# }
-
-# # Установка значения
-# for key, value in snip.items():
-#     r.set(key, value)
 
 def auth(authorized_users):
     def decorator(func):
@@ -63,11 +43,9 @@ def auth(authorized_users):
 async def first_auth(update: Update, context: CallbackContext):
     us_id = str(update.message.from_user.id)
     
-    keyboard = [[KeyboardButton('/game')] ]
-    # print(update.message.from_user.id)
     if update.message.from_user.id == OWNER:
-        keyboard.append([KeyboardButton('/mcf_status')])
-    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+        keyboard = [[KeyboardButton('/mcf_status')] ]
+        reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
     if us_id in authorized_users:
         await update.message.reply_text('✅ Вы уже авторизовались', reply_markup=reply_markup)
@@ -93,8 +71,9 @@ async def info(update: Update, context: CallbackContext):
 async def start(update: Update, context: CallbackContext):
 
     visitor = update.message.chat.first_name
-    # with open(STORAGE.GREET_MESSAGE, 'r', encoding='utf-8') as greet:
-    await update.message.reply_text(STORAGE.GREET_MESSAGE.format(visitor=visitor, trial_link=STORAGE.INVITE_LINK, chat_link=STORAGE.CHAT_LINK))
+
+    await update.message.reply_text(STORAGE.GREET_MESSAGE.format(visitor=visitor,
+                                                                 chat_link=STORAGE.CHAT_LINK))
 
 @auth(authorized_users=authorized_users)
 async def emul(update: Update, context: CallbackContext):
@@ -125,31 +104,6 @@ async def change_actual_mirror(update: Update, context: CallbackContext):
         await update.message.reply_text(f'Зеркало добавлено: {new_link}')
 
 @auth(authorized_users=authorized_users)
-async def echo_score(update: Update, context: CallbackContext) -> None:
-    
-
-    if r.get('is_active') != '0':
-        
-        timestamp = divmod(int(r.get('time')), 60)
-        minutes = timestamp[0] if timestamp[0] > 9 else f"0{timestamp[0]}"
-        seconds = timestamp[1] if timestamp[1] > 9 else f"0{timestamp[1]}"
-        message_for_reply = STORAGE.SCORE_ANSWER.format(
-            blue_kills = r.get('blue_kills'),
-            blue_towers = r.get('blue_towers'),
-            red_kills = r.get('red_kills'),
-            red_towers = r.get('red_towers'),
-            blue_gold = r.get('blue_gold'),
-            red_gold = r.get('red_gold'),
-            blue_t1_hp = r.get('blue_t1_hp'),
-            red_t1_hp = r.get('red_t1_hp'),
-            time = ':'.join([str(minutes), str(seconds)]),
-        )
-        await update.message.reply_text(message_for_reply)
-    else:
-        await update.message.reply_text('Нет активной игры')
-
-
-@auth(authorized_users=authorized_users)
 async def mcf_status(update: Update, context: CallbackContext) -> None:
     if update.message.from_user.id == OWNER:
         from PIL import ImageGrab
@@ -161,11 +115,6 @@ async def mcf_status(update: Update, context: CallbackContext) -> None:
 
         # Отправка изображения как фото
         await update.message.reply_photo(photo=img_byte_array)
-
-async def trial(update: Update, context: CallbackContext) -> None:
-
-    await update.message.reply_text('Пробный период действует сутки: {link}'.format(link=STORAGE.INVITE_LINK))
-
 
 # @auth(authorized_users=authorized_users)
 async def predicts_check(update: Update, context: CallbackContext) -> None:
