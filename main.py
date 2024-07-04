@@ -73,7 +73,8 @@ async def start(update: Update, context: CallbackContext):
     visitor = update.message.chat.first_name
 
     await update.message.reply_text(STORAGE.GREET_MESSAGE.format(visitor=visitor,
-                                                                 chat_link=STORAGE.CHAT_LINK))
+                                                                 chat_link=STORAGE.CHAT_LINK,
+                                                                 nfa_link=STORAGE.NFA_LINK))
 
 @auth(authorized_users=authorized_users)
 async def emul(update: Update, context: CallbackContext):
