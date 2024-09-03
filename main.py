@@ -7,7 +7,7 @@ import json
 import os
 import logging
 
-from static_data import (
+from static import (
     STORAGE,
     OWNER,
     AUTH_COMMAND
@@ -33,30 +33,30 @@ def auth(authorized_users):
         @wraps(func)
         async def wrapper(update: Update, context: CallbackContext):
             user_id = update.message.from_user.id
-            if str(user_id) in authorized_users:
+            if str(user_id) == OWNER:
                 return await func(update, context)
             else:
                 await update.message.reply_text("🚫 Unauthorized")
         return wrapper
     return decorator
 
-async def first_auth(update: Update, context: CallbackContext):
-    us_id = str(update.message.from_user.id)
+# async def first_auth(update: Update, context: CallbackContext):
+#     us_id = str(update.message.from_user.id)
     
-    if update.message.from_user.id == OWNER:
-        keyboard = [[KeyboardButton('/mcf_status')] ]
-        reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+#     if update.message.from_user.id == OWNER:
+#         keyboard = [[KeyboardButton('/mcf_status')] ]
+#         reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-    if us_id in authorized_users:
-        await update.message.reply_text('✅ Вы уже авторизовались', reply_markup=reply_markup)
-    else:
-        authorized_users.append(us_id)
+#     if us_id in authorized_users:
+#         await update.message.reply_text('✅ Вы уже авторизовались', reply_markup=reply_markup)
+#     else:
+#         authorized_users.append(us_id)
 
-        with open(STORAGE.AUTH_USERS, 'w+') as us:
-            for i in authorized_users:
-                us.writelines(i + '\n')
+#         with open(STORAGE.AUTH_USERS, 'w+') as us:
+#             for i in authorized_users:
+#                 us.writelines(i + '\n')
 
-        await update.message.reply_text('✅ Авторизация успешна', reply_markup=reply_markup)
+#         await update.message.reply_text('✅ Авторизация успешна', reply_markup=reply_markup)
 
 # @auth(authorized_users=authorized_users)
 async def info(update: Update, context: CallbackContext):
@@ -118,6 +118,9 @@ async def mcf_status(update: Update, context: CallbackContext) -> None:
         await update.message.reply_photo(photo=img_byte_array)
 
 # @auth(authorized_users=authorized_users)
+async def pr_channel(update: Update, context: CallbackContext) -> None:
+    await update.message.reply_text(STORAGE.PR_CHANNEL_MESSAGE)
+# @auth(authorized_users=authorized_users)
 async def predicts_check(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
 
@@ -146,11 +149,12 @@ def main() -> None:
     """Start the bot."""
     application = Application.builder().token(os.getenv('BOT_TOKEN')).build()
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler(AUTH_COMMAND, first_auth))
+    # application.add_handler(CommandHandler(AUTH_COMMAND, first_auth))
     # application.add_handler(CommandHandler("game", echo_score))
     # application.add_handler(CommandHandler("build", echo_build))
-    application.add_handler(CommandHandler("predicts_global", predicts_check))
-    application.add_handler(CommandHandler("predicts_daily", predicts_check))
+    application.add_handler(CommandHandler("pr_global", predicts_check))
+    application.add_handler(CommandHandler("pr_daily", predicts_check))
+    application.add_handler(CommandHandler("pr_channel", pr_channel))
     # application.add_handler(CommandHandler("trial", trial))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))

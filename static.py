@@ -24,11 +24,12 @@ class STORAGE:
     AUTH_USERS = os.path.join(MCF_BOT, 'untracking', 'authorized_users') # Postgre!
 
     GREET_MESSAGE = open(os.path.join('.', 'storage_data', 'greet_message.txt'), 'r', encoding='utf-8').read()
+    PR_CHANNEL_MESSAGE = open(os.path.join('.', 'storage_data', 'pr_channel_message.txt'), 'r', encoding='utf-8').read()
     MAIN_INFO = open(os.path.join('.', 'storage_data', 'bot_info_message.txt'), 'r', encoding='utf-8').read()
     # EXTEND_INFO = open(os.path.join('.', 'storage_data', 'bot_extendinfo_message.txt'), 'r', encoding='utf-8').read()
     BETS_INFO = open(os.path.join('.', 'storage_data', 'bets_start_message.txt'), 'r', encoding='utf-8').read()
     # FLETS_INFO = open(os.path.join('.', 'storage_data', 'flets_info_message.txt'), 'r', encoding='utf-8').read()
-    SCORE_ANSWER = open(os.path.join(MCF_BOT, 'mcf_lib', 'score_snip.txt'), 'r', encoding='utf-8').read()
+    # SCORE_ANSWER = open(os.path.join(MCF_BOT, 'mcf_lib', 'score_snip.txt'), 'r', encoding='utf-8').read()
 
     PREDICTS_ANSWER = os.path.join('.', 'storage_data', 'predicts_answer_sample.txt')
     PREDICTS_TRACE_GLOBAL = os.path.join(MCF_BOT, 'untracking', 'predicts_trace.json')
