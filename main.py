@@ -33,9 +33,11 @@ def auth(authorized_users):
         @wraps(func)
         async def wrapper(update: Update, context: CallbackContext):
             user_id = update.message.from_user.id
-            if str(user_id) == OWNER:
+            if user_id == OWNER:
+                
                 return await func(update, context)
             else:
+                
                 await update.message.reply_text("🚫 Unauthorized")
         return wrapper
     return decorator
