@@ -21,6 +21,8 @@ class STORAGE:
     NFA_LINK = '\nhttps://t.me/' + os.getenv('NFA_LINK')
     
     MIRROR_PAGE = os.path.join(MCF_BOT, 'untracking', 'mirror_page.txt')
+    CURRENT_GAME = os.path.join(MCF_BOT, 'untracking', 'current_game_link.txt')
+    
     AUTH_USERS = os.path.join(MCF_BOT, 'untracking', 'authorized_users') # Postgre!
 
     GREET_MESSAGE = open(os.path.join('.', 'storage_data', 'greet_message.txt'), 'r', encoding='utf-8').read()

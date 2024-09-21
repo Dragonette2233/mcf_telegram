@@ -62,7 +62,7 @@ def auth(authorized_users):
 
 # @auth(authorized_users=authorized_users)
 async def info(update: Update, context: CallbackContext):
-
+    
     if update.message.text == '/info':
         answer = STORAGE.MAIN_INFO
     elif update.message.text == '/info_bets':
@@ -87,8 +87,24 @@ async def emul(update: Update, context: CallbackContext):
 
 # @auth(authorized_users=authorized_users)
 async def actual_mirror(update: Update, context: CallbackContext):
-    with open(STORAGE.MIRROR_PAGE, 'r') as ex_url:
-        await update.message.reply_text(f'Актуальное зеркало: {ex_url.read()}')
+    
+    msg = update.message.text
+    
+    print(msg)
+    
+    if msg == '/mirror':
+        with open(STORAGE.MIRROR_PAGE, 'r') as ex_url:
+            await update.message.reply_text(f'Актуальное зеркало: {ex_url.read()}')
+    elif msg == '/current_game':
+        with open(STORAGE.CURRENT_GAME, 'r') as ex_url:
+            curr = ex_url.read()
+            
+            if curr == 'None':
+                resp = "В данный момент нет отслеживаемой игры"
+            else:
+                resp = f'Ссылка на актуальную игру: {curr}'
+                
+            await update.message.reply_text(resp)
 
 @auth(authorized_users=authorized_users)
 async def change_actual_mirror(update: Update, context: CallbackContext):
@@ -129,7 +145,7 @@ async def predicts_check(update: Update, context: CallbackContext) -> None:
     with open(STORAGE.PREDICTS_ANSWER, 'r', encoding='utf-8') as file:
         predicts_answer_message = file.read()
 
-    if update.message.text == '/predicts_global':
+    if update.message.text == '/pr_global':
         top_message = 'Результат по предиктам за все время'
         predicts_STORAGE = STORAGE.PREDICTS_TRACE_GLOBAL
     else:
@@ -159,13 +175,15 @@ def main() -> None:
     application.add_handler(CommandHandler("pr_channel", pr_channel))
     # application.add_handler(CommandHandler("trial", trial))
     application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
-    application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
+    # application.add_handler(MessageHandler(filters.TEXT & filters.Regex(r'https\S+'), change_actual_mirror))
 
     application.add_handler(CommandHandler('info', info))
     #application.add_handler(CommandHandler('info_predicts', info))
     #application.add_handler(CommandHandler('info_extend', info))
     application.add_handler(CommandHandler('info_bets', info))
+    
     application.add_handler(CommandHandler('mirror', actual_mirror))
+    application.add_handler(CommandHandler('current_game', actual_mirror))
 
     application.add_handler(CommandHandler('emul_stop', emul))
     application.add_handler(CommandHandler('mcf_status', mcf_status))
